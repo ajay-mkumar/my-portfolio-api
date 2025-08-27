@@ -2,10 +2,14 @@ package org.portfolio.user.service;
 
 import org.portfolio.user.dto.UserRequestDto;
 import org.portfolio.user.dto.UserResponseDto;
+import org.portfolio.user.dto.WorkExperienceDto;
 import org.portfolio.user.mapper.UserMapper;
+import org.portfolio.user.mapper.WorkExperienceMapper;
 import org.portfolio.user.modal.User;
+import org.portfolio.user.modal.WorkExperience;
 import org.portfolio.user.repository.UserRepository;
 import org.portfolio.security.JwtService;
+import org.portfolio.user.repository.WorkRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,15 +21,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserRepository userRepository;
+    private final WorkRepository workRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtUtil;
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtUtil) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtUtil, WorkRepository workRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.workRepository = workRepository;
     }
 
     public UserResponseDto createUser(UserRequestDto userDto) {
@@ -35,7 +41,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     public UserResponseDto getUser(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = fetchUser(username);
         return UserMapper.toDto(user);
     }
 
@@ -62,6 +68,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .withUsername(user.getUsername())
                 .password(user.getPassword())
                 .build();
+    }
+
+    public WorkExperienceDto addWorkExperience(String username, WorkExperienceDto workExperienceDto) {
+        WorkExperience workExperience = WorkExperienceMapper.toEntity(workExperienceDto, fetchUser(username));
+        WorkExperience createdWorkExperience = workRepository.save(workExperience);
+        return WorkExperienceMapper.toDto(createdWorkExperience);
+    }
+
+    private User fetchUser(String username) {
+        return  userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
 
