@@ -12,6 +12,8 @@ public class UserMapper {
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setAboutMe(userDto.getAboutMe());
+        user.setWorkExperience(userDto.getWorkExperience());
+        user.setAccademics(userDto.getAccademics());
         user.setPassword(userDto.getPassword()); // encode happens in createUser
         return user;
     }
@@ -23,6 +25,8 @@ public class UserMapper {
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
         dto.setAboutMe(user.getAboutMe());
+        dto.setWorkExperience(user.getWorkExperience());
+        dto.setAccademics(user.getAccademics());
         return dto;
     }
 }

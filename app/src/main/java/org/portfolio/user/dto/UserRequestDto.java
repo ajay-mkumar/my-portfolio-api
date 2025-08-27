@@ -32,6 +32,14 @@ public class UserRequestDto {
     private String aboutMe;
 
     @NotBlank
+    @Size(max = 1000, message = "work experience should not exceed 1000")
+    private String workExperience;
+
+    @NotBlank
+    @Size(max = 1000, message = "Accademics should not exceed 1000")
+    private String accademics;
+
+    @NotBlank
     @Size(min=8, message = "Please enter at least 8 characters")
     private String password;
 }
