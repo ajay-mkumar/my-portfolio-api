@@ -7,4 +7,6 @@ public interface UserService {
     public UserResponseDto createUser(UserRequestDto userDto);
 
     public String loginUser(String username, String password);
+
+    public UserResponseDto getUser(String username);
 }

@@ -34,6 +34,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return UserMapper.toDto(userRepository.save(user));
     }
 
+    public UserResponseDto getUser(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        return UserMapper.toDto(user);
+    }
+
     public String loginUser(String username, String password) {
         System.out.println("username: " + username);
         User user = userRepository.findByUsername(username)
@@ -59,3 +64,4 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .build();
     }
 }
+
