@@ -1,0 +1,38 @@
+package org.portfolio.user.dto;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class UserRequestDto {
+    @NotBlank
+    @Size(max=50, message = "First Name is required")
+    private String firstName;
+
+    @NotBlank
+    @Size(max=50, message = "Last Name is required")
+    private String lastName;
+
+    @NotBlank
+    @Size(max=50, message = "username is required")
+    private String username;
+
+    @NotBlank
+    @Email(message = "Please enter a valid email address")
+    private String email;
+
+    @NotBlank
+    @Size(max = 1000, message = "About me should not exceed 1000")
+    private String aboutMe;
+
+    @NotBlank
+    @Size(min=8, message = "Please enter at least 8 characters")
+    private String password;
+}
+
