@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ResumeController {
     private final UserService userService;
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<UserResponseDto> getUserDetails(@RequestParam String username) {
         return ResponseEntity.ok(userService.getUser(username));
     }
