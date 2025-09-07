@@ -2,6 +2,7 @@ package org.portfolio.user.service;
 
 import org.portfolio.user.dto.UserRequestDto;
 import org.portfolio.user.dto.UserResponseDto;
+import org.portfolio.user.dto.UserUpdateDto;
 import org.portfolio.user.dto.WorkExperienceDto;
 import org.portfolio.user.mapper.UserMapper;
 import org.portfolio.user.mapper.WorkExperienceMapper;
@@ -39,6 +40,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword())); // ✅ encode password
         return UserMapper.toDto(userRepository.save(user));
     }
+
+    public UserResponseDto updateUser(String username, UserUpdateDto dto) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        UserMapper.updateEntity(user, dto);
+        return UserMapper.toDto(userRepository.save(user));
+    }
+
 
     public UserResponseDto getUser(String username) {
         User user = fetchUser(username);

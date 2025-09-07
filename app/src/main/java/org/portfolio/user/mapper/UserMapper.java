@@ -2,6 +2,7 @@ package org.portfolio.user.mapper;
 
 import org.portfolio.user.dto.UserRequestDto;
 import org.portfolio.user.dto.UserResponseDto;
+import org.portfolio.user.dto.UserUpdateDto;
 import org.portfolio.user.modal.User;
 
 public class UserMapper {
@@ -29,4 +30,15 @@ public class UserMapper {
         dto.setAccademics(user.getAccademics());
         return dto;
     }
+
+    public static void updateEntity(User user, UserUpdateDto dto) {
+        if (dto.getFirstName() != null) user.setFirstName(dto.getFirstName());
+        if (dto.getLastName() != null) user.setLastName(dto.getLastName());
+        if (dto.getUsername() != null) user.setUsername(dto.getUsername());
+        if (dto.getEmail() != null) user.setEmail(dto.getEmail());
+        if (dto.getAboutMe() != null) user.setAboutMe(dto.getAboutMe());
+        if (dto.getWorkExperience() != null) user.setWorkExperience(dto.getWorkExperience());
+        if (dto.getAccademics() != null) user.setAccademics(dto.getAccademics());
+    }
+
 }

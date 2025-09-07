@@ -3,6 +3,7 @@ package org.portfolio.user.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.portfolio.user.dto.UserResponseDto;
+import org.portfolio.user.dto.UserUpdateDto;
 import org.portfolio.user.dto.WorkExperienceDto;
 import org.portfolio.user.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +26,11 @@ public class UserController {
     public ResponseEntity<WorkExperienceDto> addWorkExp(@Valid @RequestBody WorkExperienceDto workExperienceDto, Authentication authentication) {
         String username = authentication.getName();
         return ResponseEntity.ok(userService.addWorkExperience(username, workExperienceDto));
+    }
+
+    @PutMapping("/updateUser")
+    public ResponseEntity<UserResponseDto> updateUser(@Valid @RequestBody UserUpdateDto userDto, Authentication authentication) {
+        String username = authentication.getName();
+        return ResponseEntity.ok(userService.updateUser(username, userDto));
     }
 }
