@@ -76,6 +76,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return WorkExperienceMapper.toDto(createdWorkExperience);
     }
 
+    public WorkExperienceDto getWorkExperience(String username) {
+        WorkExperience workExperience = workRepository.findByUser(fetchUser(username)).orElseThrow(() -> new RuntimeException("No work experience found"));
+        return WorkExperienceMapper.toDto(workExperience);
+    }
+
     private User fetchUser(String username) {
         return  userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
     }

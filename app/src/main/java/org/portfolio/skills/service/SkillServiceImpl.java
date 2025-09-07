@@ -24,4 +24,10 @@ public class SkillServiceImpl implements SkillService{
         skills.setSkillSets(skillSets.getSkillSets());
         return SkillsMapper.toDto(skillsRepository.save(skills));
     }
+
+    public SkillsDto getSkills(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        Skills skills  = skillsRepository.findByUser(user).orElseThrow(() -> new RuntimeException("no skills found"));
+        return SkillsMapper.toDto(skills);
+    }
 }

@@ -12,5 +12,7 @@ public interface UserService {
 
     public UserResponseDto getUser(String username);
 
+    public WorkExperienceDto getWorkExperience(String username);
+
     public WorkExperienceDto addWorkExperience(String username, WorkExperienceDto workExperienceDto);
 }
