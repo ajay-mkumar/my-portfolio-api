@@ -1,9 +1,6 @@
 package org.portfolio.user.service;
 
-import org.portfolio.user.dto.UserRequestDto;
-import org.portfolio.user.dto.UserResponseDto;
-import org.portfolio.user.dto.UserUpdateDto;
-import org.portfolio.user.dto.WorkExperienceDto;
+import org.portfolio.user.dto.*;
 import org.portfolio.user.mapper.UserMapper;
 import org.portfolio.user.mapper.WorkExperienceMapper;
 import org.portfolio.user.modal.User;
@@ -59,8 +56,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return UserMapper.toDto(user);
     }
 
-    public String loginUser(String username, String password) {
-        System.out.println("username: " + username);
+    public LoginResponseDto loginUser(String username, String password) {
         User user = userRepository.findByUsername(username)
                 .filter(u -> passwordEncoder.matches(password, u.getPassword()))
                 .orElseThrow(() -> new RuntimeException("Invalid username or password"));
@@ -70,8 +66,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .password(user.getPassword())
                 .build();
 
-        return jwtUtil.generateToken(userDetails);
-
+        String token = jwtUtil.generateToken(userDetails);
+        return new LoginResponseDto(user.getUsername(), token);
     }
 
     @Override
