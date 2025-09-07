@@ -4,8 +4,8 @@ import org.portfolio.user.modal.User;
 import org.portfolio.user.modal.WorkExperience;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface WorkRepository extends JpaRepository<WorkExperience, Long> {
-    Optional<WorkExperience> findByUser(User user);
+    List<WorkExperience> findByUser(User user);
 }

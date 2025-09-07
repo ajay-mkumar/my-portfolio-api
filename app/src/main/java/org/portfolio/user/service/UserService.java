@@ -6,6 +6,8 @@ import org.portfolio.user.dto.UserResponseDto;
 import org.portfolio.user.dto.UserUpdateDto;
 import org.portfolio.user.dto.WorkExperienceDto;
 
+import java.util.List;
+
 public interface UserService {
     public UserResponseDto createUser(UserRequestDto userDto);
 
@@ -15,7 +17,7 @@ public interface UserService {
 
     public UserResponseDto getUser(String username);
 
-    public WorkExperienceDto getWorkExperience(String username);
+    public List<WorkExperienceDto> getWorkExperience(String username);
 
     public WorkExperienceDto addWorkExperience(String username, WorkExperienceDto workExperienceDto);
 }

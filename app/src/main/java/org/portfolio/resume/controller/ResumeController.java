@@ -42,7 +42,7 @@ public class ResumeController {
     }
 
     @GetMapping("/workExp")
-    public ResponseEntity<WorkExperienceDto> getWorkExperience(@RequestParam String username) {
+    public ResponseEntity<List<WorkExperienceDto>> getWorkExperience(@RequestParam String username) {
         return ResponseEntity.ok(userService.getWorkExperience(username));
     }
 }

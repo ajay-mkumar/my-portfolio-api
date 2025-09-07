@@ -19,6 +19,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserRepository userRepository;
@@ -86,10 +89,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return WorkExperienceMapper.toDto(createdWorkExperience);
     }
 
-    public WorkExperienceDto getWorkExperience(String username) {
-        WorkExperience workExperience = workRepository.findByUser(fetchUser(username)).orElseThrow(() -> new RuntimeException("No work experience found"));
-        return WorkExperienceMapper.toDto(workExperience);
+    public List<WorkExperienceDto> getWorkExperience(String username) {
+        List<WorkExperience> workExperience = workRepository.findByUser(fetchUser(username));
+        return workExperience.stream()
+                .map(WorkExperienceMapper::toDto) // convert entity -> DTO
+                .collect(Collectors.toList());   // gather into List
     }
+
 
     private User fetchUser(String username) {
         return  userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
