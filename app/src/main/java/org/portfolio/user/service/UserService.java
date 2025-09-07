@@ -17,4 +17,6 @@ public interface UserService {
     public List<WorkExperienceDto> getWorkExperience(String username);
 
     public WorkExperienceDto addOrUpdateWorkExperience(String username, WorkExperienceDto workExperienceDto, Long id);
+
+    public void deleteWorkExperience(String username, Long  id);
 }

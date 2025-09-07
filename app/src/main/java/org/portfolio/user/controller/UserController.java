@@ -33,4 +33,10 @@ public class UserController {
         String username = authentication.getName();
         return ResponseEntity.ok(userService.updateUser(username, userDto));
     }
+
+    @DeleteMapping("/workExperience/{id}")
+    public ResponseEntity<String> deleteWorkExp(@PathVariable Long id, Authentication authentication) {
+        userService.deleteWorkExperience(authentication.getName(), id);
+        return  ResponseEntity.ok("Deleted successfully");
+    }
 }

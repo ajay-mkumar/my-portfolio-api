@@ -1,5 +1,6 @@
 package org.portfolio.user.service;
 
+import org.hibernate.jdbc.Work;
 import org.portfolio.user.dto.*;
 import org.portfolio.user.mapper.UserMapper;
 import org.portfolio.user.mapper.WorkExperienceMapper;
@@ -111,6 +112,17 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return WorkExperienceMapper.toDto(createdWorkExperience);
     }
 
+    public void deleteWorkExperience(String username, Long id) {
+        User user = fetchUser(username);
+        WorkExperience workExp = workRepository.findById(id).orElseThrow(() -> new RuntimeException("Project not found"));
+
+        if (!workExp.getUser().equals(user)) {
+            throw new RuntimeException("You do not have permission to delete this work experience");
+        }
+
+        // Delete the work experience
+        workRepository.delete(workExp);
+    }
 
     public List<WorkExperienceDto> getWorkExperience(String username) {
         List<WorkExperience> workExperience = workRepository.findByUser(fetchUser(username));
