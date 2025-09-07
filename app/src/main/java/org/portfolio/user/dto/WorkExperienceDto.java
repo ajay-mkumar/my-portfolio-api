@@ -8,6 +8,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class WorkExperienceDto {
+    private Long id;
+    private String companyName;
     private String designation;
     private String duration;
     private String workDetails;

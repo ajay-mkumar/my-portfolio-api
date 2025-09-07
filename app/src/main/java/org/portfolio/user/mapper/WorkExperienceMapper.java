@@ -10,6 +10,7 @@ public class WorkExperienceMapper {
 
         WorkExperience workExperience = new WorkExperience();
         workExperience.setUser(user);
+        workExperience.setCompanyName(dto.getCompanyName());
         workExperience.setDesignation(dto.getDesignation());
         workExperience.setDuration(dto.getDuration());
         workExperience.setWorkDetails(dto.getWorkDetails());
@@ -21,6 +22,8 @@ public class WorkExperienceMapper {
         if (workExperience == null) return null;
 
         WorkExperienceDto dto = new WorkExperienceDto();
+        dto.setId(workExperience.getId());
+        dto.setCompanyName(workExperience.getCompanyName());
         dto.setDesignation(workExperience.getDesignation());
         dto.setDuration(workExperience.getDuration());
         dto.setWorkDetails(workExperience.getWorkDetails());

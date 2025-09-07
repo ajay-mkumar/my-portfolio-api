@@ -18,6 +18,10 @@ public class WorkExperience {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
+    @NotBlank(message = "Company Name is required")
+    @Size(max = 100, message = "Company Name must not exceed 1000")
+    private String companyName;
+
     @NotBlank(message = "Designation is required")
     @Size(max = 100, message = "Designation must not exceed 1000")
     private String designation;

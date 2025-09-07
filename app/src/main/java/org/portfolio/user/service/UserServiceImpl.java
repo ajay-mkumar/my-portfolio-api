@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,11 +84,37 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .build();
     }
 
-    public WorkExperienceDto addWorkExperience(String username, WorkExperienceDto workExperienceDto) {
-        WorkExperience workExperience = WorkExperienceMapper.toEntity(workExperienceDto, fetchUser(username));
-        WorkExperience createdWorkExperience = workRepository.save(workExperience);
+    public WorkExperienceDto addOrUpdateWorkExperience(String username, WorkExperienceDto workExperienceDto, Long id) {
+        // Check if update is intended
+        if (id != null) {
+            Optional<WorkExperience> optionalWorkExperience = workRepository.findById(id);
+
+            if (optionalWorkExperience.isPresent()) {
+                WorkExperience existingWorkExperience = optionalWorkExperience.get();
+
+                // Ensure the work experience belongs to the given user
+                if (existingWorkExperience.getUser().equals(fetchUser(username))) {
+                    existingWorkExperience.setCompanyName(workExperienceDto.getCompanyName());
+                    existingWorkExperience.setDesignation(workExperienceDto.getDesignation());
+                    existingWorkExperience.setDuration(workExperienceDto.getDuration());
+                    existingWorkExperience.setWorkDetails(workExperienceDto.getWorkDetails());
+
+                    WorkExperience updatedWorkExperience = workRepository.save(existingWorkExperience);
+                    return WorkExperienceMapper.toDto(updatedWorkExperience);
+                } else {
+                    throw new IllegalArgumentException("This work experience does not belong to the user: " + username);
+                }
+            } else {
+                throw new IllegalArgumentException("Work experience with id " + id + " not found");
+            }
+        }
+
+        // If id is null → create new WorkExperience
+        WorkExperience newWorkExperience = WorkExperienceMapper.toEntity(workExperienceDto, fetchUser(username));
+        WorkExperience createdWorkExperience = workRepository.save(newWorkExperience);
         return WorkExperienceMapper.toDto(createdWorkExperience);
     }
+
 
     public List<WorkExperienceDto> getWorkExperience(String username) {
         List<WorkExperience> workExperience = workRepository.findByUser(fetchUser(username));

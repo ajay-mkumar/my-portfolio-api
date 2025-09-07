@@ -22,10 +22,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser(username));
     }
 
-    @PostMapping("/workExperience")
-    public ResponseEntity<WorkExperienceDto> addWorkExp(@Valid @RequestBody WorkExperienceDto workExperienceDto, Authentication authentication) {
+    @PutMapping("/workExperience")
+    public ResponseEntity<WorkExperienceDto> addWorkExp(@Valid @RequestBody WorkExperienceDto workExperienceDto,@RequestParam(required = false) Long id ,Authentication authentication) {
         String username = authentication.getName();
-        return ResponseEntity.ok(userService.addWorkExperience(username, workExperienceDto));
+        return ResponseEntity.ok(userService.addOrUpdateWorkExperience(username, workExperienceDto, id));
     }
 
     @PutMapping("/updateUser")
