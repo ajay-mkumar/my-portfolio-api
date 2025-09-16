@@ -21,7 +21,6 @@ public class Project {
 
     private String name;
 
-    @Lob
     private String image;
 
     private String description;

@@ -8,9 +8,12 @@ import org.portfolio.project.modal.Project;
 import org.portfolio.user.modal.User;
 import org.portfolio.project.repository.ProjectRepository;
 import org.portfolio.user.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -20,8 +23,13 @@ public class ProjectServiceImpl implements ProjectService {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
 
-    public ProjectDetailsDto addProject(String username, ProjectDetailsDto projectDetailsDto) {
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
+    public ProjectDetailsDto addProject(String username, ProjectDetailsDto projectDetailsDto, MultipartFile photo) {
         User user = this.getUser(username);
+        String imagePath = this.uploadPhoto(photo);
+        projectDetailsDto.setImage(imagePath);
         Project project = ProjectMapper.toEntity(projectDetailsDto, user);
         Project createdProject = projectRepository.save(project);
         return ProjectMapper.toDto(createdProject);
@@ -64,6 +72,25 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.delete(project);
     }
 
+    private String uploadPhoto(MultipartFile photo) {
+        try {
+            File directory = new File(uploadDir);
+
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
+
+            photo.transferTo(new File(directory, fileName));
+
+            return "/uploads/project/" + fileName;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     private Project getProjectById(Long id) {
         return projectRepository.findById(id)
                 .orElseThrow(() -> new NoProjectFoundException("Project not found with the id " + id));
@@ -72,5 +99,4 @@ public class ProjectServiceImpl implements ProjectService {
     private User getUser(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
-
 }

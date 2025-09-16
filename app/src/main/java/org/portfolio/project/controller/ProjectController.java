@@ -5,6 +5,7 @@ import org.portfolio.project.service.ProjectService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,9 +26,9 @@ public class ProjectController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ProjectDetailsDto> addProject(@RequestBody ProjectDetailsDto projectDetailsDto, Authentication authentication) {
+    public ResponseEntity<ProjectDetailsDto> addProject(@RequestPart("project") ProjectDetailsDto projectDetailsDto, @RequestPart MultipartFile photo, Authentication authentication) {
         String username = authentication.getName();
-        return ResponseEntity.ok(projectService.addProject(username, projectDetailsDto));
+        return ResponseEntity.ok(projectService.addProject(username, projectDetailsDto, photo));
     }
 
     @PutMapping("/{id}")
