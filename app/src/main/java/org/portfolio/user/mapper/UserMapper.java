@@ -13,8 +13,6 @@ public class UserMapper {
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setAboutMe(userDto.getAboutMe());
-        user.setProfilePicture(userDto.getProfilePicture());
-        user.setResume(userDto.getResume());
         user.setWorkExperience(userDto.getWorkExperience());
         user.setAccademics(userDto.getAccademics());
         user.setPassword(userDto.getPassword()); // encode happens in createUser

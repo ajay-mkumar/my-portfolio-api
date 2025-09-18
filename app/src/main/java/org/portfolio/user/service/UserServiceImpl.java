@@ -45,8 +45,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         this.workRepository = workRepository;
     }
 
-    public UserResponseDto createUser(UserRequestDto userDto) {
+    public UserResponseDto createUser(UserRequestDto userDto, MultipartFile profilePicture, MultipartFile resume) {
         User user = UserMapper.toEntity(userDto);
+        String profilePicturePath = UploadFileUtil.uploadFile(profilePicture, uploadDir, PROFILE_PICTURE);
+        String resumePath = UploadFileUtil.uploadFile(resume, uploadDir, RESUME);
+        user.setProfilePicture(profilePicturePath);
+        user.setResume(resumePath);
         user.setPassword(passwordEncoder.encode(user.getPassword())); // ✅ encode password
         return UserMapper.toDto(userRepository.save(user));
     }
