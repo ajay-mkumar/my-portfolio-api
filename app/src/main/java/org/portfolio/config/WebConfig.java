@@ -8,8 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${file.upload-dir}")
-    private String uploadDir;
+    private final String uploadDir = "C:/Users/Ajay/projects/java/portfolio/uploads";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
