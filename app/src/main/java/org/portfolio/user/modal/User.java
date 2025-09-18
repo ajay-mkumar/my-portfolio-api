@@ -20,6 +20,8 @@ public class User  {
     private String email;
     private String password;
     private String aboutMe;
+    private String profilePicture;
+    private String resume;
     private String workExperience;
     private String accademics;
     private String role;

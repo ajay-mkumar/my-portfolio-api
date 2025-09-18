@@ -25,6 +25,10 @@ public class UserUpdateDto {
     @Size(max = 1000)
     private String aboutMe;
 
+    private String profilePicture;
+
+    private String resume;
+
     @Size(max = 1000)
     private String workExperience;
 

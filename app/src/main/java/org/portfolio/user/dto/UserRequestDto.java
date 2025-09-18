@@ -39,6 +39,16 @@ public class UserRequestDto {
     @Size(max = 1000, message = "Accademics should not exceed 1000")
     private String accademics;
 
+
+    @NotBlank
+    @Size(max = 300, message = "Profile  Picture should not exceed 1000")
+    private String profilePicture;
+
+
+    @NotBlank
+    @Size(max = 300, message = "Resume should not exceed 1000")
+    private String resume;
+
     @NotBlank
     @Size(min=8, message = "Please enter at least 8 characters")
     private String password;

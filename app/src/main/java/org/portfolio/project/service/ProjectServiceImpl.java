@@ -8,6 +8,7 @@ import org.portfolio.project.modal.Project;
 import org.portfolio.user.modal.User;
 import org.portfolio.project.repository.ProjectRepository;
 import org.portfolio.user.repository.UserRepository;
+import org.portfolio.util.UploadFileUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,13 @@ public class ProjectServiceImpl implements ProjectService {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
 
-    @Value("${file.upload-dir}")
+    @Value("${file.upload-dir-project}")
     private String uploadDir;
+    private final String PROJECT = "project";
 
     public ProjectDetailsDto addProject(String username, ProjectDetailsDto projectDetailsDto, MultipartFile photo) {
         User user = this.getUser(username);
-        String imagePath = this.uploadPhoto(photo);
+        String imagePath = UploadFileUtil.uploadFile(photo, uploadDir, PROJECT);
         projectDetailsDto.setImage(imagePath);
         Project project = ProjectMapper.toEntity(projectDetailsDto, user);
         Project createdProject = projectRepository.save(project);
@@ -70,25 +72,6 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         projectRepository.delete(project);
-    }
-
-    private String uploadPhoto(MultipartFile photo) {
-        try {
-            File directory = new File(uploadDir);
-
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-
-            String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
-
-            photo.transferTo(new File(directory, fileName));
-
-            return "/uploads/project/" + fileName;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     private Project getProjectById(Long id) {

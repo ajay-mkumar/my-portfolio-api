@@ -9,6 +9,7 @@ import org.portfolio.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/user")
@@ -23,15 +24,15 @@ public class UserController {
     }
 
     @PutMapping("/workExperience")
-    public ResponseEntity<WorkExperienceDto> addWorkExp(@Valid @RequestBody WorkExperienceDto workExperienceDto,@RequestParam(required = false) Long id ,Authentication authentication) {
+    public ResponseEntity<WorkExperienceDto> addWorkExp(@Valid @RequestBody WorkExperienceDto workExperienceDto, @RequestParam(required = false) Long id ,Authentication authentication) {
         String username = authentication.getName();
         return ResponseEntity.ok(userService.addOrUpdateWorkExperience(username, workExperienceDto, id));
     }
 
     @PutMapping("/updateUser")
-    public ResponseEntity<UserResponseDto> updateUser(@Valid @RequestBody UserUpdateDto userDto, Authentication authentication) {
+    public ResponseEntity<UserResponseDto> updateUser(@Valid @RequestPart(value = "user") UserUpdateDto userDto, @RequestPart(value = "profile-picture") MultipartFile profilePicture, Authentication authentication) {
         String username = authentication.getName();
-        return ResponseEntity.ok(userService.updateUser(username, userDto));
+        return ResponseEntity.ok(userService.updateUser(username, userDto, profilePicture));
     }
 
     @DeleteMapping("/workExperience/{id}")

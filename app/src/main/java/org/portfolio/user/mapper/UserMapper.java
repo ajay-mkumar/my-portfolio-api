@@ -13,6 +13,8 @@ public class UserMapper {
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setAboutMe(userDto.getAboutMe());
+        user.setProfilePicture(userDto.getProfilePicture());
+        user.setResume(userDto.getResume());
         user.setWorkExperience(userDto.getWorkExperience());
         user.setAccademics(userDto.getAccademics());
         user.setPassword(userDto.getPassword()); // encode happens in createUser
@@ -26,6 +28,8 @@ public class UserMapper {
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
         dto.setAboutMe(user.getAboutMe());
+        dto.setProfilePicture(user.getProfilePicture());
+        dto.setResume(user.getResume());
         dto.setWorkExperience(user.getWorkExperience());
         dto.setAccademics(user.getAccademics());
         return dto;
@@ -37,6 +41,8 @@ public class UserMapper {
         if (dto.getUsername() != null) user.setUsername(dto.getUsername());
         if (dto.getEmail() != null) user.setEmail(dto.getEmail());
         if (dto.getAboutMe() != null) user.setAboutMe(dto.getAboutMe());
+        if (dto.getProfilePicture() != null) user.setProfilePicture(dto.getProfilePicture());
+        if (dto.getResume() != null) user.setResume(dto.getResume());
         if (dto.getWorkExperience() != null) user.setWorkExperience(dto.getWorkExperience());
         if (dto.getAccademics() != null) user.setAccademics(dto.getAccademics());
     }

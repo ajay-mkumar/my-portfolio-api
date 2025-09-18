@@ -9,13 +9,16 @@ import org.portfolio.user.modal.WorkExperience;
 import org.portfolio.user.repository.UserRepository;
 import org.portfolio.security.JwtService;
 import org.portfolio.user.repository.WorkRepository;
+import org.portfolio.util.UploadFileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +30,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private final WorkRepository workRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtUtil;
+
+    @Value("${file.upload-dir-project}")
+    private String uploadDir;
+    private final String PROFILE_PICTURE = "profile_picture";
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -43,10 +50,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return UserMapper.toDto(userRepository.save(user));
     }
 
-    public UserResponseDto updateUser(String username, UserUpdateDto dto) {
+    public UserResponseDto updateUser(String username, UserUpdateDto dto, MultipartFile profilePicture) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
+        String profilePicturePath = UploadFileUtil.uploadFile(profilePicture, uploadDir, PROFILE_PICTURE);
+        System.out.println("profile picture path " + profilePicturePath);
+        dto.setProfilePicture(profilePicturePath);
         UserMapper.updateEntity(user, dto);
         return UserMapper.toDto(userRepository.save(user));
     }

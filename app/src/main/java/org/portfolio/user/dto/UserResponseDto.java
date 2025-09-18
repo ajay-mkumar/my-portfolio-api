@@ -14,6 +14,8 @@ public class UserResponseDto {
     private String username;
     private String email;
     private String aboutMe;
+    private String profilePicture;
+    private String resume;
     private String workExperience;
     private String accademics;
 }
