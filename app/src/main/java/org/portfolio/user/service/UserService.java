@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserService {
     public UserResponseDto createUser(UserRequestDto userDto);
 
-    public UserResponseDto updateUser(String username, UserUpdateDto userDto, MultipartFile profilePicture);
+    public UserResponseDto updateUser(String username, UserUpdateDto userDto, MultipartFile profilePicture, MultipartFile resume);
 
     public LoginResponseDto loginUser(String username, String password);
 

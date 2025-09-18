@@ -24,20 +24,20 @@ public class UserController {
     }
 
     @PutMapping("/workExperience")
-    public ResponseEntity<WorkExperienceDto> addWorkExp(@Valid @RequestBody WorkExperienceDto workExperienceDto, @RequestParam(required = false) Long id ,Authentication authentication) {
+    public ResponseEntity<WorkExperienceDto> addWorkExp(@Valid @RequestBody WorkExperienceDto workExperienceDto, @RequestParam(required = false) Long id, Authentication authentication) {
         String username = authentication.getName();
         return ResponseEntity.ok(userService.addOrUpdateWorkExperience(username, workExperienceDto, id));
     }
 
     @PutMapping("/updateUser")
-    public ResponseEntity<UserResponseDto> updateUser(@Valid @RequestPart(value = "user") UserUpdateDto userDto, @RequestPart(value = "profile-picture") MultipartFile profilePicture, Authentication authentication) {
+    public ResponseEntity<UserResponseDto> updateUser(@Valid @RequestPart(value = "user") UserUpdateDto userDto, @RequestPart(value = "profile-picture") MultipartFile profilePicture, @RequestPart(value = "resume") MultipartFile resume, Authentication authentication) {
         String username = authentication.getName();
-        return ResponseEntity.ok(userService.updateUser(username, userDto, profilePicture));
+        return ResponseEntity.ok(userService.updateUser(username, userDto, profilePicture, resume));
     }
 
     @DeleteMapping("/workExperience/{id}")
     public ResponseEntity<String> deleteWorkExp(@PathVariable Long id, Authentication authentication) {
         userService.deleteWorkExperience(authentication.getName(), id);
-        return  ResponseEntity.ok("Deleted successfully");
+        return ResponseEntity.ok("Deleted successfully");
     }
 }

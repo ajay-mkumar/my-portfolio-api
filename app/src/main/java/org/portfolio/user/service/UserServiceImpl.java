@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Value("${file.upload-dir-project}")
     private String uploadDir;
     private final String PROFILE_PICTURE = "profile_picture";
+    private final String RESUME = "resume";
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -50,12 +51,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return UserMapper.toDto(userRepository.save(user));
     }
 
-    public UserResponseDto updateUser(String username, UserUpdateDto dto, MultipartFile profilePicture) {
+    public UserResponseDto updateUser(String username, UserUpdateDto dto, MultipartFile profilePicture, MultipartFile resume) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         String profilePicturePath = UploadFileUtil.uploadFile(profilePicture, uploadDir, PROFILE_PICTURE);
-        System.out.println("profile picture path " + profilePicturePath);
+        String resumePath = UploadFileUtil.uploadFile(resume, uploadDir, RESUME);
         dto.setProfilePicture(profilePicturePath);
+        dto.setResume(resumePath);
         UserMapper.updateEntity(user, dto);
         return UserMapper.toDto(userRepository.save(user));
     }
