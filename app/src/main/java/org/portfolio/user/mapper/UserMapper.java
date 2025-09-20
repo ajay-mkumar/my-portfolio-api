@@ -6,7 +6,7 @@ import org.portfolio.user.dto.UserUpdateDto;
 import org.portfolio.user.modal.User;
 
 public class UserMapper {
-    public static User toEntity (UserRequestDto userDto) {
+    public static User toEntity(UserRequestDto userDto) {
         User user = new User();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
@@ -16,6 +16,9 @@ public class UserMapper {
         user.setWorkExperience(userDto.getWorkExperience());
         user.setAccademics(userDto.getAccademics());
         user.setPassword(userDto.getPassword()); // encode happens in createUser
+        user.setGithub(userDto.getGithub());
+        user.setPhone(userDto.getPhone());
+        user.setLinkedIn(userDto.getLinkedIn());
         return user;
     }
 
@@ -30,6 +33,9 @@ public class UserMapper {
         dto.setResume(user.getResume());
         dto.setWorkExperience(user.getWorkExperience());
         dto.setAccademics(user.getAccademics());
+        dto.setGithub(user.getGithub());
+        dto.setPhone(user.getPhone());
+        dto.setLinkedIn(user.getLinkedIn());
         return dto;
     }
 
@@ -43,6 +49,9 @@ public class UserMapper {
         if (dto.getResume() != null) user.setResume(dto.getResume());
         if (dto.getWorkExperience() != null) user.setWorkExperience(dto.getWorkExperience());
         if (dto.getAccademics() != null) user.setAccademics(dto.getAccademics());
+        if (dto.getGithub() != null) user.setGithub(dto.getGithub());
+        if (dto.getPhone() != null) user.setPhone(dto.getPhone());
+        if (dto.getLinkedIn() != null) user.setLinkedIn(dto.getLinkedIn());
     }
 
 }

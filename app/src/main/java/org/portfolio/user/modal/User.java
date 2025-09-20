@@ -1,5 +1,6 @@
 package org.portfolio.user.modal;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,5 +25,14 @@ public class User  {
     private String resume;
     private String workExperience;
     private String accademics;
+
+    @Nullable
+    private String github;
+
+    private String phone;
+
+    @Nullable
+    private String linkedIn;
+
     private String role;
 }

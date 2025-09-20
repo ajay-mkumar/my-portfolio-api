@@ -1,6 +1,7 @@
 package org.portfolio.user.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,5 +35,14 @@ public class UserUpdateDto {
 
     @Size(max = 1000)
     private String accademics;
+
+    private String github;
+
+    @NotBlank(message = "Phone should not be blank")
+    @Size(min = 10, max = 10, message = "Phone must contain only 10 digits")
+    private String phone;
+
+
+    private String linkedIn;
 }
 

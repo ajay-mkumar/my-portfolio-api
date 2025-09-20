@@ -18,4 +18,7 @@ public class UserResponseDto {
     private String resume;
     private String workExperience;
     private String accademics;
+    private String github;
+    private String phone;
+    private String linkedIn;
 }

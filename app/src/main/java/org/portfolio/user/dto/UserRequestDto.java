@@ -42,5 +42,13 @@ public class UserRequestDto {
     @NotBlank
     @Size(min=8, message = "Please enter at least 8 characters")
     private String password;
+
+    private String github;
+
+    @NotBlank(message = "Phone should not be blank")
+    @Size(min = 10, max = 10, message = "Phone must contain only 10 digits")
+    private String phone;
+
+    private String linkedIn;
 }
 
