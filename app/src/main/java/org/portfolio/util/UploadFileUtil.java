@@ -1,32 +1,34 @@
 package org.portfolio.util;
 
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 
 public class UploadFileUtil {
 
-    public static String uploadFile(MultipartFile photo, String uploadDir, String fileType) {
+    private static final String BUCKET_NAME = "myportfolio_uploads"; // your GCS bucket
+
+    public static String uploadFile(MultipartFile file, String fileType) {
         try {
-            // Create directory if not exists
-            File directory = new File(uploadDir, fileType);
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-
             // Unique filename
-            String fileName = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            String blobName = fileType + "/" + fileName;
 
-            // Save file
-            File dest = new File(directory, fileName);
-            photo.transferTo(dest);
+            // Initialize GCS client
+            Storage storage = StorageOptions.getDefaultInstance().getService();
 
-            // Return relative URL (what frontend will use)
-            return "/uploads/" + fileType + "/" + fileName;
+            // Upload file to GCS
+            BlobInfo blobInfo = BlobInfo.newBuilder(BUCKET_NAME, blobName).build();
+            storage.create(blobInfo, file.getBytes());
+
+            // Return public URL or GCS path
+            return "https://storage.googleapis.com/" + BUCKET_NAME + "/" + blobName;
 
         } catch (IOException e) {
-            throw new RuntimeException("Failed to store file: " + e.getMessage(), e);
+            throw new RuntimeException("Failed to upload file: " + e.getMessage(), e);
         }
     }
 }

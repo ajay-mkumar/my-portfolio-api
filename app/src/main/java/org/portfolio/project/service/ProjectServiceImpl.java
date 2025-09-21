@@ -10,9 +10,11 @@ import org.portfolio.project.repository.ProjectRepository;
 import org.portfolio.user.repository.UserRepository;
 import org.portfolio.util.UploadFileUtil;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.util.List;
@@ -24,13 +26,11 @@ public class ProjectServiceImpl implements ProjectService {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
 
-    @Value("${file.upload-dir-project}")
-    private String uploadDir;
     private final String PROJECT = "project";
 
     public ProjectDetailsDto addProject(String username, ProjectDetailsDto projectDetailsDto, MultipartFile photo) {
         User user = this.getUser(username);
-        String imagePath = UploadFileUtil.uploadFile(photo, uploadDir, PROJECT);
+        String imagePath = UploadFileUtil.uploadFile(photo, PROJECT);
         projectDetailsDto.setImage(imagePath);
         Project project = ProjectMapper.toEntity(projectDetailsDto, user);
         Project createdProject = projectRepository.save(project);
@@ -80,6 +80,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     private User getUser(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
     }
 }

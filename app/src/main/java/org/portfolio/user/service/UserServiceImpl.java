@@ -31,8 +31,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtUtil;
 
-    @Value("${file.upload-dir-project}")
-    private String uploadDir;
     private final String PROFILE_PICTURE = "profile_picture";
     private final String RESUME = "resume";
 
@@ -47,8 +45,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     public UserResponseDto createUser(UserRequestDto userDto, MultipartFile profilePicture, MultipartFile resume) {
         User user = UserMapper.toEntity(userDto);
-        String profilePicturePath = UploadFileUtil.uploadFile(profilePicture, uploadDir, PROFILE_PICTURE);
-        String resumePath = UploadFileUtil.uploadFile(resume, uploadDir, RESUME);
+        String profilePicturePath = UploadFileUtil.uploadFile(profilePicture, PROFILE_PICTURE);
+        String resumePath = UploadFileUtil.uploadFile(resume, RESUME);
         user.setProfilePicture(profilePicturePath);
         user.setResume(resumePath);
         user.setPassword(passwordEncoder.encode(user.getPassword())); // ✅ encode password
@@ -58,8 +56,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public UserResponseDto updateUser(String username, UserUpdateDto dto, MultipartFile profilePicture, MultipartFile resume) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        String profilePicturePath = UploadFileUtil.uploadFile(profilePicture, uploadDir, PROFILE_PICTURE);
-        String resumePath = UploadFileUtil.uploadFile(resume, uploadDir, RESUME);
+        String profilePicturePath = UploadFileUtil.uploadFile(profilePicture, PROFILE_PICTURE);
+        String resumePath = UploadFileUtil.uploadFile(resume, RESUME);
         dto.setProfilePicture(profilePicturePath);
         dto.setResume(resumePath);
         UserMapper.updateEntity(user, dto);
