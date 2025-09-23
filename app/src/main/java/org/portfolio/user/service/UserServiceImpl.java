@@ -56,10 +56,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public UserResponseDto updateUser(String username, UserUpdateDto dto, MultipartFile profilePicture, MultipartFile resume) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        String profilePicturePath = UploadFileUtil.uploadFile(profilePicture, PROFILE_PICTURE);
-        String resumePath = UploadFileUtil.uploadFile(resume, RESUME);
-        dto.setProfilePicture(profilePicturePath);
-        dto.setResume(resumePath);
+        if(profilePicture != null  && !profilePicture.isEmpty()) {
+            String profilePicturePath = UploadFileUtil.uploadFile(profilePicture, PROFILE_PICTURE);
+            dto.setProfilePicture(profilePicturePath);
+        }
+
+        if(resume != null && !resume.isEmpty()) {
+            String resumePath = UploadFileUtil.uploadFile(resume, RESUME);
+            dto.setResume(resumePath);
+        }
         UserMapper.updateEntity(user, dto);
         return UserMapper.toDto(userRepository.save(user));
     }

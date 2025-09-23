@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @PutMapping("/updateUser")
-    public ResponseEntity<UserResponseDto> updateUser(@Valid @RequestPart(value = "user") UserUpdateDto userDto, @RequestPart(value = "profile-picture") MultipartFile profilePicture, @RequestPart(value = "resume") MultipartFile resume, Authentication authentication) {
+    public ResponseEntity<UserResponseDto> updateUser(@Valid @RequestPart(value = "user") UserUpdateDto userDto, @RequestPart(value = "profile-picture", required = false) MultipartFile profilePicture, @RequestPart(value = "resume", required = false) MultipartFile resume, Authentication authentication) {
         String username = authentication.getName();
         return ResponseEntity.ok(userService.updateUser(username, userDto, profilePicture, resume));
     }

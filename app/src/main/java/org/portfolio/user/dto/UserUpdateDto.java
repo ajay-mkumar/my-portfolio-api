@@ -38,8 +38,6 @@ public class UserUpdateDto {
 
     private String github;
 
-    @NotBlank(message = "Phone should not be blank")
-    @Size(min = 10, max = 10, message = "Phone must contain only 10 digits")
     private String phone;
 
 
